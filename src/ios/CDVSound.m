@@ -288,6 +288,7 @@
                 }
             }
             if (!bError) {
+	      // JENLA
                 NSLog(@"Playing audio sample '%@'", audioFile.resourcePath);
                 NSNumber* loopOption = [options objectForKey:@"numberOfLoops"];
                 NSInteger numberOfLoops = 0;
