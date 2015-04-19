@@ -30,6 +30,17 @@
 
 @synthesize soundCache, avSession;
 
+- (void)pluginInitialize {
+	// initializations go here.
+	AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+	BOOL ok;
+	NSError *setCategoryError = nil;
+	ok = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
+	if (!ok) {
+		NSLog(@"%s setCategoryError=%@", __PRETTY_FUNCTION__, setCategoryError);
+	}
+}
+
 // Maps a url for a resource path for recording
 - (NSURL*)urlForRecording:(NSString*)resourcePath
 {
@@ -280,7 +291,7 @@
                 }
 
                 NSString* sessionCategory = bPlayAudioWhenScreenIsLocked ? AVAudioSessionCategoryPlayback : AVAudioSessionCategorySoloAmbient;
-                [self.avSession setCategory:sessionCategory error:&err];
+                [self.avSession setCategory:sessionCategory withOptions:9 error:&err];
                 if (![self.avSession setActive:YES error:&err]) {
                     // other audio with higher priority that does not allow mixing could cause this to fail
                     NSLog(@"Unable to play audio: %@", [err localizedFailureReason]);
